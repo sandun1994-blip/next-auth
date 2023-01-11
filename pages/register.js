@@ -8,10 +8,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { useFormik } from "formik";
 import { registerValidate } from "../lib/validate";
+import { useRouter } from "next/router";
 
 
 export default function Register() {
 
+    const router = useRouter()
 
     const [show1, setShow1] = useState(false)
     const [show2, setShow2] = useState(false)
@@ -25,7 +27,18 @@ export default function Register() {
     })
 
     async function onSubmit(values) {
-        console.log(values);
+        const options ={
+            method:"POST",
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify(values)
+        }
+
+        await fetch('http://localhost:3000/api/auth/signup').then(res=>res.json()).then(data=>{
+            if (data) {
+                router.push('/')
+            }
+      
+        console.log(data)})
     }
 
 
